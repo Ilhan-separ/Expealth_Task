@@ -1,42 +1,82 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
-import { DarkColors } from "../theme/colors";
+import { useNavigation, useTheme } from "@react-navigation/native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from "../theme/metrics";
+import CustomTextInput from "../components/TextInput";
+import LoginButton from "../components/LoginButton";
 
 const LoginScreen = () => {
-  const [text, onChangeText] = React.useState("Useless Text");
-  const [number, onChangeNumber] = React.useState("");
+  const navigation = useNavigation();
+  const { colors } = useTheme();
 
   return (
-    <View style={styles.mainContainer}>
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeText}
-        value={text}
-      />
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeNumber}
-        value={number}
-        placeholder="useless placeholder"
-        keyboardType="numeric"
-      />
-      <Text style={{ color: DarkColors.colors.text }}>Baban</Text>
-    </View>
+    <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
+      <View style={styles.mainContainer}>
+        <View
+          style={{
+            paddingVertical: verticalScale(10),
+            paddingHorizontal: horizontalScale(10),
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: colors.primary,
+              marginTop: verticalScale(45),
+              width: horizontalScale(300),
+              height: verticalScale(285),
+              borderTopLeftRadius: moderateScale(400),
+              borderTopRightRadius: moderateScale(50),
+              borderBottomLeftRadius: moderateScale(50),
+              borderBottomRightRadius: moderateScale(100),
+            }}
+          ></View>
+          <View
+            style={{
+              backgroundColor: colors.card,
+              width: horizontalScale(300),
+              height: verticalScale(270),
+              borderTopLeftRadius: moderateScale(300),
+              borderTopRightRadius: moderateScale(50),
+              borderBottomLeftRadius: moderateScale(50),
+              borderBottomRightRadius: moderateScale(100),
+              position: "absolute",
+              top: verticalScale(50),
+              right: horizontalScale(10),
+            }}
+          ></View>
+        </View>
+        <Text style={[styles.loginHeaderText, { color: colors.primary }]}>
+          Login
+        </Text>
+        <View style={{ alignItems: "center" }}>
+          <CustomTextInput placeholder={"Email"} />
+          <CustomTextInput placeholder={"Password"} />
+          <LoginButton
+            text="Login"
+            onPress={() => navigation.navigate("Home")}
+          />
+        </View>
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center",
   },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
+
+  loginHeaderText: {
+    fontSize: moderateScale(40),
+    marginHorizontal: horizontalScale(20),
+    marginVertical: verticalScale(40),
+    fontWeight: "bold",
+    letterSpacing: 0.5,
   },
 });
 

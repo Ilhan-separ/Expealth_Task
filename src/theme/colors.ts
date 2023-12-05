@@ -4,7 +4,7 @@ const DarkColors: Theme = {
   dark: true,
   colors: {
     primary: "#5856D6",
-    card: "#5856D6",
+    card: "#D5D4D7",
     text: "#FFFFFF",
     border: "#5856D6",
     background: "#28282F",

@@ -1,16 +1,22 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
+import { useTheme } from "@react-navigation/native";
 
-export default function Homescreen() {
+const Homescreen = () => {
+  const { colors } = useTheme();
   return (
     <View style={styles.container}>
-      <Text>Homescreen</Text>
+      <Text style={{ color: colors.text }}>Homescreen</Text>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
+
+export default Homescreen;

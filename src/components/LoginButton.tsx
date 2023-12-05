@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(50),
     alignItems: "center",
     elevation: 1,
+    alignSelf: "center",
   },
   buttonText: {
     color: "white",

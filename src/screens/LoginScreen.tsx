@@ -26,27 +26,28 @@ const LoginScreen = () => {
           <View
             style={{
               backgroundColor: colors.primary,
-              marginTop: verticalScale(45),
-              width: horizontalScale(300),
-              height: verticalScale(285),
-              borderTopLeftRadius: moderateScale(400),
-              borderTopRightRadius: moderateScale(50),
-              borderBottomLeftRadius: moderateScale(50),
-              borderBottomRightRadius: moderateScale(100),
+              width: horizontalScale(280),
+              height: verticalScale(270),
+              borderTopLeftRadius: moderateScale(300),
+              borderTopRightRadius: moderateScale(150),
+              borderBottomLeftRadius: moderateScale(1000),
+              borderBottomRightRadius: moderateScale(180),
+              position: "absolute",
+              top: verticalScale(12),
+              right: horizontalScale(10),
             }}
           ></View>
           <View
             style={{
               backgroundColor: colors.card,
-              width: horizontalScale(300),
-              height: verticalScale(270),
-              borderTopLeftRadius: moderateScale(300),
-              borderTopRightRadius: moderateScale(50),
-              borderBottomLeftRadius: moderateScale(50),
-              borderBottomRightRadius: moderateScale(100),
               position: "absolute",
-              top: verticalScale(50),
-              right: horizontalScale(10),
+              left: horizontalScale(12),
+              width: horizontalScale(300),
+              height: verticalScale(285),
+              borderTopRightRadius: moderateScale(80),
+              borderTopLeftRadius: moderateScale(80),
+              borderBottomLeftRadius: moderateScale(50),
+              borderBottomRightRadius: moderateScale(500),
             }}
           ></View>
         </View>
@@ -56,11 +57,8 @@ const LoginScreen = () => {
         <View style={{ alignItems: "center" }}>
           <CustomTextInput placeholder={"Email"} />
           <CustomTextInput placeholder={"Password"} />
-          <LoginButton
-            text="Login"
-            onPress={() => navigation.navigate("Home")}
-          />
         </View>
+        <LoginButton text="Login" onPress={() => navigation.navigate("Home")} />
       </View>
     </KeyboardAwareScrollView>
   );
@@ -69,11 +67,12 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
+    justifyContent: "space-around",
   },
 
   loginHeaderText: {
-    fontSize: moderateScale(40),
-    marginHorizontal: horizontalScale(20),
+    fontSize: moderateScale(48),
+    marginHorizontal: horizontalScale(40),
     marginVertical: verticalScale(40),
     fontWeight: "bold",
     letterSpacing: 0.5,

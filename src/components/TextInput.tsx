@@ -14,13 +14,13 @@ const CustomTextInput = ({ placeholder }: TextInputType) => {
       style={[
         styles.input,
         {
-          borderColor: colors.border,
+          borderColor: colors.primary,
           color: colors.text,
           width: "80%",
           borderRadius: moderateScale(18),
         },
       ]}
-      cursorColor={"white"}
+      cursorColor={colors.notification}
       placeholderTextColor={"gray"}
       placeholder={placeholder}
     />

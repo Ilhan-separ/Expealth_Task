@@ -4,7 +4,6 @@ import {
   Pressable,
   StyleSheet,
   Text,
-  View,
 } from "react-native";
 import React from "react";
 import {
@@ -13,15 +12,15 @@ import {
   verticalScale,
 } from "../theme/metrics";
 import { useTheme } from "@react-navigation/native";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 
 type ButtonType = {
   text: string;
+  position: "absolute" | "relative";
   onPress: (event: GestureResponderEvent) => void;
 };
 
-const LoginButton = (probs: ButtonType) => {
-  const { text, onPress } = probs;
+const CustomButton = (probs: ButtonType) => {
+  const { text, position, onPress } = probs;
   const { colors } = useTheme();
 
   const animated = new Animated.Value(1);
@@ -45,7 +44,14 @@ const LoginButton = (probs: ButtonType) => {
       onPress={onPress}
       onPressIn={fadeIn}
       onPressOut={fadeOut}
-      style={[styles.button, { backgroundColor: colors.primary }]}
+      style={[
+        styles.button,
+        {
+          backgroundColor: colors.primary,
+          position: position,
+          bottom: 0,
+        },
+      ]}
     >
       <Animated.View style={{ opacity: animated }}>
         <Text style={styles.buttonText}>{text}</Text>
@@ -54,7 +60,7 @@ const LoginButton = (probs: ButtonType) => {
   );
 };
 
-export default LoginButton;
+export default CustomButton;
 
 const styles = StyleSheet.create({
   button: {

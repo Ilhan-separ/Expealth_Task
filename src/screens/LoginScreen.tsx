@@ -8,20 +8,23 @@ import {
   verticalScale,
 } from "../theme/metrics";
 import CustomTextInput from "../components/TextInput";
-import LoginButton from "../components/LoginButton";
+import CustomButton from "../components/Button";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
   const { colors } = useTheme();
 
   return (
-    <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ flex: 1 }}
+      automaticallyAdjustContentInsets={true}
+    >
       <View style={styles.mainContainer}>
         <View
-          style={{
-            paddingVertical: verticalScale(10),
-            paddingHorizontal: horizontalScale(10),
-          }}
+        // style={{
+        //   paddingVertical: verticalScale(10),
+        //   paddingHorizontal: horizontalScale(10),
+        // }}
         >
           <View
             style={{
@@ -58,7 +61,11 @@ const LoginScreen = () => {
           <CustomTextInput placeholder={"Email"} />
           <CustomTextInput placeholder={"Password"} />
         </View>
-        <LoginButton text="Login" onPress={() => navigation.navigate("Home")} />
+        <CustomButton
+          text="Login"
+          position="relative"
+          onPress={() => navigation.navigate("Home")}
+        />
       </View>
     </KeyboardAwareScrollView>
   );
@@ -68,6 +75,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     justifyContent: "space-around",
+    alignContent: "center",
   },
 
   loginHeaderText: {

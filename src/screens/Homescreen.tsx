@@ -6,7 +6,7 @@ import {
   View,
 } from "react-native";
 import React from "react";
-import { useTheme } from "@react-navigation/native";
+import { useNavigation, useTheme } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import {
   horizontalScale,
@@ -15,6 +15,8 @@ import {
 } from "../theme/metrics";
 import CustomButton from "../components/Button";
 
+
+// EXTRACT TO ANOTHER CLASS
 const patientsData = [
   { id: "1", name: "Ahmet Yılmaz", details: "Ahmet's details" },
   { id: "2", name: "Ayşe Demir", details: "Ayşe's details" },
@@ -26,11 +28,13 @@ const patientsData = [
   { id: "8", name: "Mehmet Öztürk", details: "Mehmet's details" },
   { id: "9", name: "Elif Karahan", details: "Elif's details" },
   { id: "10", name: "Hakan Aydın", details: "Hakan's details" },
-  // Add more patient data as needed
 ];
 
 const Homescreen = () => {
+  const navigation = useNavigation();
   const { colors } = useTheme();
+
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -52,7 +56,7 @@ const Homescreen = () => {
           </TouchableOpacity>
         )}
       />
-      <CustomButton text="Add Patient" position="absolute" onPress={() => {}} />
+      <CustomButton text="Add Patient" position="absolute" onPress={() => navigation.navigate("AddPatient")} />
     </View>
   );
 };

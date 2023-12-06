@@ -4,6 +4,7 @@ import LoginScreen from "./screens/LoginScreen";
 import { View, useColorScheme } from "react-native";
 import { DarkColors, LightColors } from "./theme/colors";
 import Homescreen from "./screens/Homescreen";
+import AddPatientScreen from "./screens/AddPatientScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,11 @@ const Navigation = () => {
               headerBackVisible: false,
               headerTransparent: true,
             }}
+          />
+          <Stack.Screen
+            name="AddPatient"
+            component={AddPatientScreen}
+            options={{title:'Hasta Ekle', headerBackVisible: false, headerTransparent: true, animation:"fade_from_bottom", presentation:"modal" }}
           />
         </Stack.Navigator>
       </NavigationContainer>

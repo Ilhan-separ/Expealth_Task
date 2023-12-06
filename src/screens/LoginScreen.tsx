@@ -21,10 +21,10 @@ const LoginScreen = () => {
     >
       <View style={styles.mainContainer}>
         <View
-        // style={{
-        //   paddingVertical: verticalScale(10),
-        //   paddingHorizontal: horizontalScale(10),
-        // }}
+        style={{
+          paddingVertical: verticalScale(10),
+          paddingHorizontal: horizontalScale(10),
+        }}
         >
           <View
             style={{

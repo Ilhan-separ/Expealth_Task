@@ -15,7 +15,7 @@ const CustomTextInput = ({ placeholder }: TextInputType) => {
         styles.input,
         {
           borderColor: colors.primary,
-          backgroundColor:colors.background,
+          backgroundColor: colors.background,
           color: colors.text,
           width: "80%",
           borderRadius: moderateScale(16),
@@ -33,7 +33,7 @@ export default CustomTextInput;
 const styles = StyleSheet.create({
   input: {
     height: verticalScale(45),
-    marginVertical: verticalScale(14),
+    marginTop: verticalScale(16),
     borderWidth: 1,
     padding: 10,
     shadowColor: "#000",

@@ -1,13 +1,17 @@
-import { StyleSheet, TextInput } from "react-native";
-import React from "react";
+import { StyleSheet, TextInput, TextInputProps } from "react-native";
 import { moderateScale, verticalScale } from "../theme/metrics";
 import { useTheme } from "@react-navigation/native";
 
-type TextInputType = {
+type CustomTextInputProps = {
   placeholder: string;
-};
+  onChangeText: (text: string) => void;
+} & TextInputProps;
 
-const CustomTextInput = ({ placeholder }: TextInputType) => {
+const CustomTextInput = ({
+  placeholder,
+  onChangeText,
+  ...props
+}: CustomTextInputProps) => {
   const { colors } = useTheme();
   return (
     <TextInput
@@ -24,6 +28,8 @@ const CustomTextInput = ({ placeholder }: TextInputType) => {
       cursorColor={colors.notification}
       placeholderTextColor={"gray"}
       placeholder={placeholder}
+      onChangeText={onChangeText}
+      {...props}
     />
   );
 };
@@ -32,7 +38,7 @@ export default CustomTextInput;
 
 const styles = StyleSheet.create({
   input: {
-    height: verticalScale(45),
+    height: verticalScale(40),
     marginTop: verticalScale(16),
     borderWidth: 1,
     padding: 10,

@@ -8,14 +8,31 @@ import {
 } from "../theme/metrics";
 import { useTheme } from "@react-navigation/native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-import { CheckBox } from "react-native-elements";
-import { Feather } from "@expo/vector-icons";
+import { Button, CheckBox } from "react-native-elements";
+import { useDispatch } from "react-redux";
+import { addPatient } from "../redux/reducers";
+import { generateUniqueId } from "../utils/generate-unique-id";
+import Seperator from "../components/Seperator";
 
 const AddPatientScreen = () => {
+  const dispatch = useDispatch();
   const { colors } = useTheme();
+
+  const [patientName, setPatientName] = useState("");
+  const [patientSurname, setPatientSurname] = useState("");
 
   const [date, setDate] = useState(new Date());
   const [check1, setCheck1] = useState(false);
+
+  const handleAddPatient = () => {
+    const uniqueId = generateUniqueId();
+    if (patientName) {
+      const patient = { id: uniqueId, name: patientName };
+      dispatch(addPatient(patient));
+    }
+
+    setPatientName("");
+  };
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
@@ -40,14 +57,20 @@ const AddPatientScreen = () => {
 
   return (
     <View style={styles.mainContainer}>
-      <CustomTextInput placeholder="Hasta ismi" />
-      <CustomTextInput placeholder="Hasta Soyismi" />
+      <CustomTextInput
+        placeholder="Hasta ismi"
+        onChangeText={(text) => setPatientName(text)}
+      />
+      <CustomTextInput
+        placeholder="Hasta Soyismi"
+        onChangeText={(text) => setPatientSurname(text)}
+      />
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          width: "80%", // ÇOK SAÇMA YÜZDE DEĞİL DİREK DEĞER VER.
+          width: "100%", // ÇOK SAÇMA YÜZDE DEĞİL DİREK DEĞER VER.
         }}
       >
         <Text style={[styles.dateText, { color: colors.text }]}>
@@ -56,19 +79,17 @@ const AddPatientScreen = () => {
 
         <TouchableOpacity
           style={[
-            styles.patientItem,
+            styles.datePickerButton,
             { backgroundColor: colors.background, borderColor: colors.primary },
           ]}
           onPress={showDatepicker}
         >
-          <Text style={[styles.patientName, { color: colors.text }]}>
+          <Text style={[styles.dateDataText, { color: colors.text }]}>
             {date.toLocaleDateString()}
           </Text>
         </TouchableOpacity>
       </View>
-      <View
-        style={{ height: 0.5, width: "100%", backgroundColor: "gray" }}
-      ></View>
+      <Seperator />
       <Text style={[styles.subHeaderText, { color: colors.text }]}>
         Şikayetler
       </Text>
@@ -157,9 +178,11 @@ const AddPatientScreen = () => {
           />
         </View>
       </View>
+      <Seperator />
       <Text style={[styles.subHeaderText, { color: colors.text }]}>
         Boy/Kilo Ölçümleri
       </Text>
+      <Button title={"Ekle"} onPress={handleAddPatient} />
     </View>
   );
 };
@@ -181,15 +204,17 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(16),
     fontWeight: "500",
   },
-  patientItem: {
+  datePickerButton: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
+    alignContent: "center",
+    height: verticalScale(40),
+    width: horizontalScale(110),
+    paddingHorizontal: horizontalScale(10),
     borderRadius: moderateScale(16),
     borderWidth: 2,
-    paddingVertical: verticalScale(10),
-    paddingHorizontal: horizontalScale(10),
     marginVertical: verticalScale(16),
-    width: horizontalScale(110),
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -202,5 +227,10 @@ const styles = StyleSheet.create({
   patientName: {
     fontSize: 18,
     fontWeight: "400",
+  },
+  dateDataText: {
+    fontSize: moderateScale(16),
+    fontWeight: "400",
+    alignSelf: "center",
   },
 });

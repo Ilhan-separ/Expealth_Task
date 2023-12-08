@@ -4,12 +4,11 @@ import { useTheme } from "@react-navigation/native";
 
 type CustomTextInputProps = {
   placeholder: string;
-  onChangeText: (text: string) => void;
 } & TextInputProps;
 
 const CustomTextInput = ({
   placeholder,
-  onChangeText,
+
   ...props
 }: CustomTextInputProps) => {
   const { colors } = useTheme();
@@ -28,7 +27,6 @@ const CustomTextInput = ({
       cursorColor={colors.notification}
       placeholderTextColor={"gray"}
       placeholder={placeholder}
-      onChangeText={onChangeText}
       {...props}
     />
   );

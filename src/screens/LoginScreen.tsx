@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -16,16 +16,11 @@ const LoginScreen = () => {
 
   return (
     <KeyboardAwareScrollView
-      contentContainerStyle={{ flex: 1 }}
-      automaticallyAdjustContentInsets={true}
+      contentContainerStyle={{ flexGrow: 1 }}
+      keyboardShouldPersistTaps={"always"}
     >
       <View style={styles.mainContainer}>
-        <View
-        style={{
-          paddingVertical: verticalScale(10),
-          paddingHorizontal: horizontalScale(10),
-        }}
-        >
+        <View style={{ marginVertical: verticalScale(50) }}>
           <View
             style={{
               backgroundColor: colors.primary,
@@ -36,7 +31,7 @@ const LoginScreen = () => {
               borderBottomLeftRadius: moderateScale(1000),
               borderBottomRightRadius: moderateScale(180),
               position: "absolute",
-              top: verticalScale(12),
+              top: verticalScale(30),
               right: horizontalScale(10),
             }}
           ></View>
@@ -57,15 +52,18 @@ const LoginScreen = () => {
         <Text style={[styles.loginHeaderText, { color: colors.primary }]}>
           Login
         </Text>
+        <View style={styles.fillerContainer}></View>
         <View style={{ alignItems: "center" }}>
           <CustomTextInput placeholder={"Email"} />
           <CustomTextInput placeholder={"Password"} />
         </View>
-        <CustomButton
-          text="Login"
-          position="relative"
-          onPress={() => navigation.navigate("Home")}
-        />
+        <View style={{ marginTop: verticalScale(30) }}>
+          <CustomButton
+            text="Login"
+            position="relative"
+            onPress={() => navigation.navigate("Home")}
+          />
+        </View>
       </View>
     </KeyboardAwareScrollView>
   );
@@ -73,7 +71,7 @@ const LoginScreen = () => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1,
+    marginVertical: verticalScale(20),
     justifyContent: "space-around",
     alignContent: "center",
   },
@@ -84,6 +82,11 @@ const styles = StyleSheet.create({
     marginVertical: verticalScale(40),
     fontWeight: "bold",
     letterSpacing: 0.5,
+  },
+  fillerContainer: {
+    height: verticalScale(300),
+    width: "100%",
+    display: "flex",
   },
 });
 

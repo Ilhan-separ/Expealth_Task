@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface Patient {
   id: string;
   name: string;
+  diseases: string[];
 }
 
 export interface PatientState {
@@ -18,8 +19,8 @@ const patientSlice = createSlice({
   initialState,
   reducers: {
     addPatient: (state, action: PayloadAction<Patient>) => {
-      const { id, name } = action.payload;
-      state.patients.push({ id, name });
+      const { id, name, diseases } = action.payload;
+      state.patients.push({ id, name, diseases });
     },
   },
 });

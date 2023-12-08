@@ -13,35 +13,28 @@ import { useDispatch } from "react-redux";
 import { addPatient } from "../redux/reducers";
 import { generateUniqueId } from "../utils/generate-unique-id";
 import Seperator from "../components/Seperator";
+import CustomButton from "../components/Button";
+import dieasesData from "../data/disease";
+import moment from "moment";
 
 const AddPatientScreen = () => {
   const dispatch = useDispatch();
   const { colors } = useTheme();
 
+  //TextInput State
   const [patientName, setPatientName] = useState("");
   const [patientSurname, setPatientSurname] = useState("");
 
-  const [date, setDate] = useState(new Date());
-  const [check1, setCheck1] = useState(false);
-
-  const handleAddPatient = () => {
-    const uniqueId = generateUniqueId();
-    if (patientName) {
-      const patient = { id: uniqueId, name: patientName };
-      dispatch(addPatient(patient));
-    }
-
-    setPatientName("");
-  };
-
+  //DatePicker State
+  const [date, setDate] = useState(moment(new Date()).format("DD-MM-YYYY"));
+  //DatePicker func
   const onChange = (event: any, selectedDate: any) => {
-    const currentDate = selectedDate;
+    const currentDate = moment(selectedDate).format("DD-MM-YYYY");
     setDate(currentDate);
   };
-
-  const showMode = (currentMode: string) => {
+  const showMode = (currentMode: any) => {
     DateTimePickerAndroid.open({
-      value: date,
+      value: new Date(),
       onChange,
       mode: currentMode,
       is24Hour: true,
@@ -50,9 +43,37 @@ const AddPatientScreen = () => {
       style: { backgroundColor: colors.primary },
     });
   };
-
   const showDatepicker = () => {
     showMode("default");
+  };
+  //CheckBox State
+  const [diseases, setDieases] = useState(dieasesData);
+
+  const handleCheckBoxChange = (id: number) => {
+    let temp = diseases.map((diease) => {
+      if (id === diease.id) {
+        return { ...diease, isChecked: !diease.isChecked };
+      }
+      return diease;
+    });
+    setDieases(temp);
+  };
+
+  let selectedCheckBox = diseases.filter((disease) => disease.isChecked);
+
+  //Redux dispatch
+  const handleAddPatient = () => {
+    const uniqueId = generateUniqueId();
+    if (patientName) {
+      const patient = {
+        id: uniqueId,
+        name: patientName,
+        diseases: selectedCheckBox.map((item) => item.name),
+      };
+      dispatch(addPatient(patient));
+    }
+
+    setPatientName("");
   };
 
   return (
@@ -85,7 +106,7 @@ const AddPatientScreen = () => {
           onPress={showDatepicker}
         >
           <Text style={[styles.dateDataText, { color: colors.text }]}>
-            {date.toLocaleDateString()}
+            {date}
           </Text>
         </TouchableOpacity>
       </View>
@@ -102,87 +123,33 @@ const AddPatientScreen = () => {
         }}
       >
         <View>
-          <CheckBox
-            title={"Öksürük"}
-            checked={check1}
-            onPress={() => setCheck1(!check1)}
-            checkedColor={colors.primary}
-            uncheckedColor={"gray"}
-            containerStyle={{
-              backgroundColor: colors.background,
-              borderWidth: 0,
-            }}
-            textStyle={{ color: colors.text }}
-          />
-          <CheckBox
-            title={"Öksürük"}
-            checked={check1}
-            onPress={() => setCheck1(!check1)}
-            uncheckedColor={"gray"}
-            checkedColor={colors.primary}
-            containerStyle={{
-              backgroundColor: colors.background,
-              borderWidth: 0,
-            }}
-            textStyle={{ color: colors.text }}
-          />
-          <CheckBox
-            title={"Öksürük"}
-            checked={check1}
-            onPress={() => setCheck1(!check1)}
-            uncheckedColor={"gray"}
-            checkedColor={colors.primary}
-            containerStyle={{
-              backgroundColor: colors.background,
-              borderWidth: 0,
-            }}
-            textStyle={{ color: colors.text }}
-          />
+          {diseases.map((item) => (
+            <CheckBox
+              key={item.id}
+              title={item.name}
+              checked={item.isChecked}
+              onPress={() => handleCheckBoxChange(item.id)}
+              checkedColor={colors.primary}
+              uncheckedColor={"gray"}
+              containerStyle={{
+                backgroundColor: colors.background,
+                borderWidth: 0,
+              }}
+              textStyle={{ color: colors.text }}
+            />
+          ))}
         </View>
-        <View>
-          <CheckBox
-            title={"Öksürük"}
-            checked={check1}
-            onPress={() => setCheck1(!check1)}
-            uncheckedColor={"gray"}
-            checkedColor={colors.primary}
-            containerStyle={{
-              backgroundColor: colors.background,
-              borderWidth: 0,
-            }}
-            textStyle={{ color: colors.text }}
-          />
-          <CheckBox
-            title={"Öksürük"}
-            checked={check1}
-            onPress={() => setCheck1(!check1)}
-            uncheckedColor={"gray"}
-            checkedColor={colors.primary}
-            containerStyle={{
-              backgroundColor: colors.background,
-              borderWidth: 0,
-            }}
-            textStyle={{ color: colors.text }}
-          />
-          <CheckBox
-            title={"Öksürük"}
-            checked={check1}
-            onPress={() => setCheck1(!check1)}
-            uncheckedColor={"gray"}
-            checkedColor={colors.primary}
-            containerStyle={{
-              backgroundColor: colors.background,
-              borderWidth: 0,
-            }}
-            textStyle={{ color: colors.text }}
-          />
-        </View>
+        <View></View>
       </View>
       <Seperator />
       <Text style={[styles.subHeaderText, { color: colors.text }]}>
         Boy/Kilo Ölçümleri
       </Text>
-      <Button title={"Ekle"} onPress={handleAddPatient} />
+      <CustomButton
+        text={"Ekle"}
+        position="relative"
+        onPress={handleAddPatient}
+      />
     </View>
   );
 };

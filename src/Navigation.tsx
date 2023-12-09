@@ -5,6 +5,7 @@ import { View, useColorScheme } from "react-native";
 import { DarkColors, LightColors } from "./theme/colors";
 import Homescreen from "./screens/Homescreen";
 import AddPatientScreen from "./screens/AddPatientScreen";
+import DetailScreen from "./screens/DetailScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -12,7 +13,12 @@ const Navigation = () => {
   const deviceTheme = useColorScheme();
 
   return (
-    <View style={{ flex: 1, backgroundColor: "black" }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: deviceTheme === "dark" ? "black" : "white",
+      }}
+    >
       <NavigationContainer
         theme={deviceTheme === "dark" ? DarkColors : LightColors}
       >
@@ -28,15 +34,47 @@ const Navigation = () => {
             options={{
               animation: "fade",
 
-              headerShown: true,
               headerBackVisible: false,
-              headerTransparent: true,
+              headerShadowVisible: false,
+              headerStyle: {
+                backgroundColor:
+                  deviceTheme === "dark"
+                    ? DarkColors.colors.background
+                    : LightColors.colors.background,
+              },
             }}
           />
           <Stack.Screen
             name="AddPatient"
             component={AddPatientScreen}
-            options={{title:'Hasta Ekle', headerBackVisible: false, headerTransparent: true, animation:"fade_from_bottom", presentation:"modal" }}
+            options={{
+              title: "Hasta Ekle",
+              headerShadowVisible: false,
+              headerStyle: {
+                backgroundColor:
+                  deviceTheme === "dark"
+                    ? DarkColors.colors.background
+                    : LightColors.colors.background,
+              },
+              animation: "fade_from_bottom",
+              presentation: "modal",
+            }}
+          />
+          <Stack.Screen
+            name="Details"
+            component={DetailScreen}
+            options={{
+              animation: "fade",
+
+              headerBackVisible: false,
+              headerShadowVisible: false,
+              headerStyle: {
+                backgroundColor:
+                  deviceTheme === "dark"
+                    ? DarkColors.colors.background
+                    : LightColors.colors.background,
+              },
+            }}
           />
         </Stack.Navigator>
       </NavigationContainer>

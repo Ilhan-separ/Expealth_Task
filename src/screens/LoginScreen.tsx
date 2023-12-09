@@ -7,8 +7,8 @@ import {
   moderateScale,
   verticalScale,
 } from "../theme/metrics";
-import CustomTextInput from "../components/TextInput";
-import CustomButton from "../components/Button";
+import CustomTextInput from "../components/CustomTextInput";
+import CustomButton from "../components/CustomButton";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   fillerContainer: {
-    height: verticalScale(300),
+    height: verticalScale(250),
     width: "100%",
     display: "flex",
   },

@@ -21,12 +21,12 @@ export default [
   },
   {
     id: 4,
-    name: "Baş Dönmesi",
+    name: "Kaşıntı",
     isChecked: false,
   },
   {
     id: 5,
-    name: "Kaşıntı",
+    name: "Baş Dönmesi",
     isChecked: false,
   },
 ];

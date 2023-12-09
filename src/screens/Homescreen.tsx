@@ -13,7 +13,7 @@ import {
   moderateScale,
   verticalScale,
 } from "../theme/metrics";
-import CustomButton from "../components/Button";
+import CustomButton from "../components/CustomButton";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 
@@ -32,27 +32,36 @@ const Homescreen = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        style={{ width: "100%" }}
-        data={patients}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={[
-              styles.patientItem,
-              { backgroundColor: colors.border, borderColor: colors.primary },
-            ]}
-          >
-            <Text style={[styles.patientName, { color: colors.text }]}>
-              {item.name}
-            </Text>
-            <AntDesign name="right" size={24} color={colors.notification} />
-          </TouchableOpacity>
-        )}
-      />
+      {patients.length > 0 ? (
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          style={{ width: "100%" }}
+          data={patients}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={[
+                styles.patientItem,
+                {
+                  backgroundColor: colors.background,
+                  borderColor: colors.primary,
+                },
+              ]}
+              onPress={() => navigation.navigate("Details")}
+            >
+              <Text style={[styles.patientName, { color: colors.text }]}>
+                {item.name}
+              </Text>
+              <AntDesign name="right" size={24} color={colors.notification} />
+            </TouchableOpacity>
+          )}
+        />
+      ) : (
+        <Text style={{ color: colors.text }}>Henüz Hastanız Yok</Text>
+      )}
+
       <CustomButton
-        text="Add Patient"
+        text="Hasta Ekle"
         position="absolute"
         onPress={() => navigation.navigate("AddPatient")}
       />
@@ -63,10 +72,10 @@ const Homescreen = () => {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: horizontalScale(10),
-    marginTop: verticalScale(100),
-    paddingBottom: verticalScale(20),
+    marginVertical: verticalScale(20),
+    paddingBottom: verticalScale(10),
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
   },
@@ -74,7 +83,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     borderRadius: moderateScale(24),
-    borderWidth: 2,
+    borderWidth: 1,
     paddingVertical: verticalScale(28),
     paddingHorizontal: horizontalScale(16),
     marginBottom: verticalScale(16),

@@ -32,7 +32,7 @@ const DetailScreen = () => {
     (item: { date: any }) => item.date
   );
   const onlyHeight = filteredHeightData.map((item: { value: string }) =>
-    parseFloat(item.value)
+    parseInt(item.value)
   );
 
   const weightData = data?.weightData || [];
@@ -43,7 +43,7 @@ const DetailScreen = () => {
     (item: { date: any }) => item.date
   );
   const onlyWeight = filteredWeightData.map((item: { value: string }) =>
-    parseFloat(item.value)
+    parseInt(item.value)
   );
 
   return (
@@ -119,7 +119,7 @@ const DetailScreen = () => {
               backgroundColor: "white",
               backgroundGradientFrom: colors.notification,
               backgroundGradientTo: colors.notification,
-              decimalPlaces: 1, // optional, defaults to 2dp
+              decimalPlaces: 0, // optional, defaults to 2dp
               color: (opacity = 1) => `rgba(88, 86, 214, ${opacity})`,
               labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
               style: {
@@ -139,7 +139,7 @@ const DetailScreen = () => {
           />
         ) : (
           <Text style={[styles.ifNotText, { color: colors.text }]}>
-            Boy Bilgileri Girilmemiştir
+            {onlyHeight}
           </Text>
         )}
 
@@ -169,7 +169,7 @@ const DetailScreen = () => {
               backgroundColor: "white",
               backgroundGradientFrom: colors.notification,
               backgroundGradientTo: colors.notification,
-              decimalPlaces: 1, // optional, defaults to 2dp
+              decimalPlaces: 0, // optional, defaults to 2dp
               color: (opacity = 1) => `rgba(88, 86, 214, ${opacity})`,
               labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
               style: {

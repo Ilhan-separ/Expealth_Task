@@ -140,7 +140,7 @@ const DetailScreen = () => {
           />
         ) : (
           <Text style={[styles.ifNotText, { color: colors.text }]}>
-            {onlyHeight}
+            Boy Bilgileri Girilmemiştir.
           </Text>
         )}
 

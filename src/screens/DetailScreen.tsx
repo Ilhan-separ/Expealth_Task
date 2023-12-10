@@ -6,7 +6,6 @@ import {
   verticalScale,
 } from "../theme/metrics";
 import { useRoute, useTheme } from "@react-navigation/native";
-import LineChartCustom from "../components/LineChartCustom";
 import { LineChart } from "react-native-chart-kit";
 
 const DetailScreen = () => {
@@ -28,6 +27,7 @@ const DetailScreen = () => {
   const filteredHeightData = heightData.filter(
     (item: { value: string }) => item.value !== ""
   );
+  console.log("HH", filteredHeightData);
   const onlyHeightDates = filteredHeightData.map(
     (item: { date: any }) => item.date
   );
@@ -39,6 +39,7 @@ const DetailScreen = () => {
   const filteredWeightData = weightData.filter(
     (item: { value: string }) => item.value !== ""
   );
+  console.log("WW", filteredWeightData);
   const onlyWeightDates = filteredWeightData.map(
     (item: { date: any }) => item.date
   );

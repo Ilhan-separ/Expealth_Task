@@ -49,9 +49,7 @@ const LoginScreen = () => {
             }}
           ></View>
         </View>
-        <Text style={[styles.loginHeaderText, { color: colors.text }]}>
-          Login
-        </Text>
+        <Text style={[styles.loginHeaderText, { color: "white" }]}>Login</Text>
         <View style={styles.fillerContainer}></View>
         <View style={{ alignItems: "center" }}>
           <CustomTextInput placeholder={"Email"} />

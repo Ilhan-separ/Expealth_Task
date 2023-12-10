@@ -16,7 +16,7 @@
 
 <p float="left">
   <img src="assets/ss/7.jpeg" alt="ss7" width="250"/>
-   <img src="assets/ss/8.jpeg" alt="ss8 width="250"/>
+   <img src="assets/ss/8.jpeg" alt="ss8" width="250"/>
 </p>
 <p float="left">
   <img src="assets/ss/9.jpeg" alt="ss9" width="250"/>

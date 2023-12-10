@@ -37,7 +37,7 @@ const LoginScreen = () => {
           ></View>
           <View
             style={{
-              backgroundColor: colors.card,
+              backgroundColor: colors.border,
               position: "absolute",
               left: horizontalScale(12),
               width: horizontalScale(300),
@@ -49,7 +49,7 @@ const LoginScreen = () => {
             }}
           ></View>
         </View>
-        <Text style={[styles.loginHeaderText, { color: colors.primary }]}>
+        <Text style={[styles.loginHeaderText, { color: colors.notification }]}>
           Login
         </Text>
         <View style={styles.fillerContainer}></View>

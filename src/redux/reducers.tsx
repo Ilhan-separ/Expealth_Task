@@ -3,7 +3,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface Patient {
   id: string;
   name: string;
+  birthDay: string;
   diseases: string[];
+  heightData: { date: string; value: string }[];
+  weightData: { date: string; value: string }[];
 }
 
 export interface PatientState {
@@ -19,8 +22,16 @@ const patientSlice = createSlice({
   initialState,
   reducers: {
     addPatient: (state, action: PayloadAction<Patient>) => {
-      const { id, name, diseases } = action.payload;
-      state.patients.push({ id, name, diseases });
+      const { id, name, birthDay, diseases, heightData, weightData } =
+        action.payload;
+      state.patients.push({
+        id,
+        name,
+        birthDay,
+        diseases,
+        heightData,
+        weightData,
+      });
     },
   },
 });

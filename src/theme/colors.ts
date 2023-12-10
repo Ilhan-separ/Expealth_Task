@@ -4,11 +4,11 @@ const DarkColors: Theme = {
   dark: true,
   colors: {
     primary: "#3164F4",
-    card: "#EAEAEA",
-    text: "#FFFFFF",
-    border: "#3C3C45",
+    card: "#E54B4B",
+    text: "#F7EBE8",
+    border: "#FFA987",
     background: "#28282F",
-    notification: "#FFFFFF",
+    notification: "#E3D8F0",
   },
 };
 
@@ -16,11 +16,11 @@ const LightColors: Theme = {
   dark: false,
   colors: {
     primary: "#3164F4",
-    card: "#EAEAEA",
+    card: "#E54B4B",
     text: "#000000",
-    border: "#EAEAEA",
+    border: "#FFA987",
     background: "white",
-    notification: "black",
+    notification: "#E3D8F0",
   },
 };
 

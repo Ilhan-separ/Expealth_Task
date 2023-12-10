@@ -8,7 +8,7 @@ type CustomTextInputProps = {
 
 const CustomTextInput = ({
   placeholder,
-
+  style,
   ...props
 }: CustomTextInputProps) => {
   const { colors } = useTheme();
@@ -20,11 +20,11 @@ const CustomTextInput = ({
           borderColor: colors.primary,
           backgroundColor: colors.background,
           color: colors.text,
-          width: "80%",
           borderRadius: moderateScale(16),
         },
+        style,
       ]}
-      cursorColor={colors.notification}
+      cursorColor={colors.text}
       placeholderTextColor={"gray"}
       placeholder={placeholder}
       {...props}
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     height: verticalScale(40),
     marginTop: verticalScale(16),
     borderWidth: 1,
+    width: "80%",
     padding: 10,
     shadowColor: "#000",
     shadowOffset: {

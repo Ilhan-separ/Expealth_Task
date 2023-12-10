@@ -47,12 +47,33 @@ const Homescreen = () => {
                   borderColor: colors.primary,
                 },
               ]}
-              onPress={() => navigation.navigate("Details")}
+              onPress={() => navigation.navigate("Details", { data: item })}
             >
-              <Text style={[styles.patientName, { color: colors.text }]}>
-                {item.name}
-              </Text>
-              <AntDesign name="right" size={24} color={colors.notification} />
+              <View
+                style={{
+                  flexDirection: "column",
+                }}
+              >
+                <Text style={[styles.patientName, { color: colors.text }]}>
+                  {item.name}
+                </Text>
+                <View style={styles.subTextContainer}>
+                  {item.diseases.map(
+                    (disease: string, index: React.Key | null | undefined) => (
+                      <Text
+                        key={index}
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                        style={styles.subText}
+                      >
+                        {disease}
+                        {" - "}
+                      </Text>
+                    )
+                  )}
+                </View>
+              </View>
+              <AntDesign name="right" size={24} color={colors.text} />
             </TouchableOpacity>
           )}
         />
@@ -73,7 +94,6 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: horizontalScale(10),
     marginVertical: verticalScale(20),
-    paddingBottom: verticalScale(10),
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -98,8 +118,19 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   patientName: {
-    fontSize: 18,
+    fontSize: moderateScale(15),
     fontWeight: "bold",
+  },
+  subTextContainer: {
+    flexDirection: "row",
+    flex: 1,
+    flexWrap: "wrap",
+    width: horizontalScale(300),
+  },
+  subText: {
+    fontSize: moderateScale(12),
+    fontWeight: "300",
+    color: "gray",
   },
 });
 

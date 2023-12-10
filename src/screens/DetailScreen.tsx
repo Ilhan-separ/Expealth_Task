@@ -1,152 +1,133 @@
-import React, { useState } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import React from "react";
 import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-} from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from "../theme/metrics";
+import { useRoute, useTheme } from "@react-navigation/native";
+import { LineChart } from "react-native-chart-kit";
+import LineChartCustom from "../components/LineChartCustom";
 
-interface DynamicTextInputExampleProps {}
+const DetailScreen = () => {
+  const { colors } = useTheme();
 
-const DynamicTextInputExample: React.FC<DynamicTextInputExampleProps> = () => {
-  const [values, setValues] = useState<string[]>([""]);
-  const [selectedDates, setSelectedDates] = useState<Date[]>([new Date()]);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const route = useRoute();
+  const data = (route.params as Record<string, any>)?.data;
 
-  const handleTextChange = (index: number, newValue: string) => {
-    setValues((prevValues) => {
-      const updatedValues = [...prevValues];
-      updatedValues[index] = newValue;
-      return updatedValues;
-    });
-  };
-
-  const handleDateChange = (index: number, newDate: Date) => {
-    setSelectedDates((prevSelectedDates) => {
-      const updatedSelectedDates = [...prevSelectedDates];
-      updatedSelectedDates[index] = newDate;
-      return updatedSelectedDates;
-    });
-    setShowDatePicker(false);
-    setSelectedIndex(null);
-  };
-
-  const showDatePickerForIndex = (index: number) => {
-    setShowDatePicker(true);
-    setSelectedIndex(index);
-  };
-
-  const addOption = () => {
-    setValues((prevValues) => [...prevValues, ""]);
-    setSelectedDates((prevSelectedDates) => [...prevSelectedDates, new Date()]);
-  };
-
-  const removeOption = (index: number) => {
-    setValues((prevValues) => {
-      const updatedValues = [...prevValues];
-      updatedValues.splice(index, 1);
-      return updatedValues;
-    });
-
-    setSelectedDates((prevSelectedDates) => {
-      const updatedSelectedDates = [...prevSelectedDates];
-      updatedSelectedDates.splice(index, 1);
-      return updatedSelectedDates;
-    });
-  };
+  const heightData = data?.heightData;
+  const onlyHeightDates = heightData.map((item) => item.date);
+  const onlyHeight = heightData.map((item) => parseFloat(item.value));
+  const weightData = data?.weightData;
+  const onlyWeightDates = weightData.map((item) => item.date);
+  const onlyWeight = weightData.map((item) => parseFloat(item.value));
 
   return (
-    <View style={styles.container}>
-      {values.map((value, index) => (
-        <View key={index} style={styles.inputContainer}>
-          <TextInput
-            style={styles.textInput}
-            onChangeText={(newValue) => handleTextChange(index, newValue)}
-            value={value}
-            placeholder={`Option ${index + 1}`}
-          />
-          <TouchableOpacity
-            onPress={() => showDatePickerForIndex(index)}
-            style={styles.datePickerButton}
-          >
-            <Text style={styles.dateButtonText}>
-              {selectedDates[index].toLocaleDateString()}
-            </Text>
-          </TouchableOpacity>
-          {values.length > 1 && (
-            <TouchableOpacity
-              onPress={() => removeOption(index)}
-              style={styles.removeButton}
-            >
-              <Text style={styles.removeButtonText}>Remove</Text>
-            </TouchableOpacity>
-          )}
+    <ScrollView>
+      <View style={styles.headerCurvedBackground}>
+        <View
+          style={[
+            styles.headerCurvedBackgroundChild,
+            { backgroundColor: colors.primary },
+          ]}
+        >
+          <Text style={[styles.headerDataText]}>{data.name}</Text>
+          <Text style={[styles.subText]}>{data.birthDay}</Text>
         </View>
-      ))}
-      <TouchableOpacity onPress={addOption} style={styles.addButton}>
-        <Text style={styles.addButtonText}>Add Option</Text>
-      </TouchableOpacity>
-
-      {showDatePicker && selectedIndex !== null && (
-        <DateTimePicker
-          value={selectedDates[selectedIndex]}
-          mode="date"
-          is24Hour={true}
-          display="default"
-          onChange={(event, newDate) =>
-            handleDateChange(selectedIndex!, newDate || new Date())
-          }
-        />
-      )}
-    </View>
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+          marginVertical: verticalScale(10),
+        }}
+      >
+        {data.diseases.map(
+          (disease: any, index: React.Key | null | undefined) => (
+            <View
+              key={index}
+              style={{
+                borderRadius: moderateScale(18),
+                marginHorizontal: horizontalScale(5),
+                marginVertical: verticalScale(5),
+                backgroundColor: colors.background,
+                borderColor: colors.primary,
+                borderWidth: 1,
+              }}
+            >
+              <Text
+                style={{
+                  color: colors.text,
+                  fontSize: moderateScale(14),
+                  padding: 10,
+                  fontWeight: "400",
+                }}
+              >
+                {disease}
+              </Text>
+            </View>
+          )
+        )}
+      </View>
+      <View
+        style={{
+          flex: 1,
+          alignContent: "center",
+          alignItems: "center",
+          borderRadius: moderateScale(18),
+        }}
+      >
+        <Text
+          style={[
+            styles.subText,
+            { color: colors.text, marginTop: verticalScale(7) },
+          ]}
+        >
+          Boy Grafiği
+        </Text>
+        <LineChartCustom dates={onlyHeightDates} values={onlyHeight} />
+        <Text
+          style={[
+            styles.subText,
+            { color: colors.text, marginTop: verticalScale(7) },
+          ]}
+        >
+          Kilo Grafiği
+        </Text>
+        <LineChartCustom dates={onlyWeightDates} values={onlyWeight} />
+      </View>
+    </ScrollView>
   );
 };
 
+export default DetailScreen;
+
 const styles = StyleSheet.create({
-  container: {
-    margin: 20,
+  headerCurvedBackground: {
+    height: verticalScale(220),
+    width: "100%",
+    transform: [{ scaleX: 2 }],
+    borderBottomStartRadius: moderateScale(200),
+    borderBottomEndRadius: moderateScale(200),
+    overflow: "hidden",
   },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  textInput: {
+  headerCurvedBackgroundChild: {
     flex: 1,
-    height: 40,
-    borderWidth: 1,
-    borderRadius: 5,
-    marginRight: 10,
-    paddingLeft: 10,
+    transform: [{ scaleX: 0.5 }],
+    paddingLeft: horizontalScale(50),
+    paddingTop: verticalScale(30),
+    backgroundColor: "yellow",
+    alignItems: "flex-start",
+    justifyContent: "center",
   },
-  datePickerButton: {
-    backgroundColor: "#3498db",
-    padding: 10,
-    borderRadius: 5,
-  },
-  dateButtonText: {
+  headerDataText: {
+    fontWeight: "600",
     color: "white",
+    fontSize: moderateScale(24),
   },
-  removeButton: {
-    backgroundColor: "red",
-    padding: 10,
-    borderRadius: 5,
-  },
-  removeButtonText: {
+  subText: {
+    fontWeight: "400",
     color: "white",
-  },
-  addButton: {
-    backgroundColor: "green",
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
-  },
-  addButtonText: {
-    color: "white",
+    fontSize: moderateScale(16),
   },
 });
-
-export default DynamicTextInputExample;

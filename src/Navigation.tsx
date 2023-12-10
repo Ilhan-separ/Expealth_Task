@@ -47,7 +47,7 @@ const Navigation = () => {
           <Stack.Screen
             name="AddPatient"
             component={AddPatientScreen}
-            options={{
+            options={({ route }) => ({
               title: "Hasta Ekle",
               headerShadowVisible: false,
               headerStyle: {
@@ -58,22 +58,18 @@ const Navigation = () => {
               },
               animation: "fade_from_bottom",
               presentation: "modal",
-            }}
+              data: route.params?.data,
+            })}
           />
           <Stack.Screen
             name="Details"
             component={DetailScreen}
             options={{
+              title: "",
               animation: "fade",
-
-              headerBackVisible: false,
-              headerShadowVisible: false,
-              headerStyle: {
-                backgroundColor:
-                  deviceTheme === "dark"
-                    ? DarkColors.colors.background
-                    : LightColors.colors.background,
-              },
+              headerBackVisible: true,
+              headerTransparent: true,
+              headerTintColor: "white",
             }}
           />
         </Stack.Navigator>

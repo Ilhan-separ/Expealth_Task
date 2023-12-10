@@ -49,7 +49,7 @@ const LoginScreen = () => {
             }}
           ></View>
         </View>
-        <Text style={[styles.loginHeaderText, { color: colors.notification }]}>
+        <Text style={[styles.loginHeaderText, { color: colors.text }]}>
           Login
         </Text>
         <View style={styles.fillerContainer}></View>

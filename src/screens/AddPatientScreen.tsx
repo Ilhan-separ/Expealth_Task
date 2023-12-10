@@ -187,10 +187,12 @@ const AddPatientScreen = () => {
       value,
       date: moment(selectedHeightDates[index]).format("DD/MM/YYYY"),
     }));
+    console.log("HH", mergedHeightList);
     const mergedWeightList = weightValues.map((value, index) => ({
       value,
       date: moment(selectedWeightDates[index]).format("DD/MM/YYYY"),
     }));
+    console.log("WW", mergedWeightList);
     if (patientName) {
       const patient = {
         id: uniqueId,
@@ -354,9 +356,6 @@ const styles = StyleSheet.create({
   checkBoxText: {
     fontWeight: "400",
   },
-
-  // NEW CONTENT STYLE
-
   removeButton: {
     padding: 10,
     borderRadius: 5,
@@ -391,7 +390,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 3,
   },
   addButtonText: {
     color: "white",

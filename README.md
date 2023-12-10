@@ -1,3 +1,9 @@
+# Usage
+
+- Firs clone the project via [`git clone`].
+- After use [`npm install`] to get node_modules.
+- Its ready to start [`npx expo start`].
+
 ## Screeshots
 
 <p float="left">

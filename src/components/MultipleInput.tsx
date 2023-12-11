@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
 import CustomTextInput from "./CustomTextInput";
 import DatePickerButton from "./DatePickerButton";
@@ -35,6 +35,7 @@ const MultipleInput = ({
         placeholder={`Girdi ${index + 1}`}
         value={value}
         keyboardType="numeric"
+        maxLength={3}
       />
       <DatePickerButton
         date={moment(selectedHeightDates[index]).format("DD/MM/YYYY")}

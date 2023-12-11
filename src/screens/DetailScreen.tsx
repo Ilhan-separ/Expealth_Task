@@ -6,7 +6,8 @@ import {
   verticalScale,
 } from "../theme/metrics";
 import { useRoute, useTheme } from "@react-navigation/native";
-import { LineChart } from "react-native-chart-kit";
+import moment from "moment";
+import LineChartCustom from "../components/LineChartCustom";
 
 const DetailScreen = () => {
   const { colors } = useTheme();
@@ -15,33 +16,54 @@ const DetailScreen = () => {
   const data = (route.params as Record<string, any>)?.data;
 
   if (!data) {
-    // Handle the case where data is not available
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>No data available</Text>
+        <Text>Data Alınamadı</Text>
       </View>
     );
   }
 
   const heightData = data?.heightData || [];
-  const filteredHeightData = heightData.filter(
-    (item: { value: string }) => item.value !== ""
+
+  const filteredHeightData = heightData
+    .filter((item: { value: string }) => item.value !== "")
+    .map((item: { date: string; value: string }) => ({
+      date: new Date(item.date),
+      value: parseInt(item.value),
+    }));
+
+  filteredHeightData.sort(
+    (
+      a: { date: { getTime: () => number } },
+      b: { date: { getTime: () => number } }
+    ) => a.date.getTime() - b.date.getTime()
   );
-  console.log("HH", filteredHeightData);
+
   const onlyHeightDates = filteredHeightData.map(
-    (item: { date: any }) => item.date
+    (item: { date: moment.MomentInput }) => moment(item.date).format("MM/YYYY")
   );
-  const onlyHeight = filteredHeightData.map((item: { value: string }) =>
-    parseInt(item.value)
+
+  const onlyHeight = filteredHeightData.map(
+    (item: { value: any }) => item.value
   );
 
   const weightData = data?.weightData || [];
-  const filteredWeightData = weightData.filter(
-    (item: { value: string }) => item.value !== ""
+  const filteredWeightData = weightData
+    .filter((item: { value: string }) => item.value !== "")
+    .map((item: { date: string; value: string }) => ({
+      date: new Date(item.date),
+      value: parseInt(item.value),
+    }));
+
+  filteredWeightData.sort(
+    (
+      a: { date: { getTime: () => number } },
+      b: { date: { getTime: () => number } }
+    ) => a.date.getTime() - b.date.getTime()
   );
-  console.log("WW", filteredWeightData);
-  const onlyWeightDates = filteredWeightData.map(
-    (item: { date: any }) => item.date
+
+  const onlyWeightDates = filteredHeightData.map(
+    (item: { date: moment.MomentInput }) => moment(item.date).format("MM/YYYY")
   );
   const onlyWeight = filteredWeightData.map((item: { value: string }) =>
     parseInt(item.value)
@@ -61,30 +83,36 @@ const DetailScreen = () => {
         </View>
       </View>
       <View style={styles.diseasesChipContainer}>
-        {data.diseases.map(
-          (disease: any, index: React.Key | null | undefined) => (
-            <View
-              key={index}
-              style={[
-                styles.diseasesChip,
-                {
-                  backgroundColor: colors.background,
-                  borderColor: colors.primary,
-                },
-              ]}
-            >
-              <Text
-                style={{
-                  color: colors.text,
-                  fontSize: moderateScale(14),
-                  padding: 10,
-                  fontWeight: "400",
-                }}
+        {data.diseases && data.diseases.length > 0 ? (
+          data.diseases.map(
+            (disease: any, index: React.Key | null | undefined) => (
+              <View
+                key={index}
+                style={[
+                  styles.diseasesChip,
+                  {
+                    backgroundColor: colors.background,
+                    borderColor: colors.primary,
+                  },
+                ]}
               >
-                {disease}
-              </Text>
-            </View>
+                <Text
+                  style={{
+                    color: colors.text,
+                    fontSize: moderateScale(14),
+                    padding: 10,
+                    fontWeight: "400",
+                  }}
+                >
+                  {disease}
+                </Text>
+              </View>
+            )
           )
+        ) : (
+          <Text style={[styles.ifNotText, { color: colors.text }]}>
+            Girilmiş Şikayet Bulunmamaktadır
+          </Text>
         )}
       </View>
       <View
@@ -104,40 +132,7 @@ const DetailScreen = () => {
           Boy Grafiği
         </Text>
         {onlyHeight && onlyHeight.length > 0 ? (
-          <LineChart
-            data={{
-              labels: onlyHeightDates,
-              datasets: [
-                {
-                  data: onlyHeight,
-                },
-              ],
-            }}
-            width={horizontalScale(350)}
-            height={verticalScale(250)}
-            yAxisInterval={1} // optional, defaults to 1
-            chartConfig={{
-              backgroundColor: "white",
-              backgroundGradientFrom: colors.notification,
-              backgroundGradientTo: colors.notification,
-              decimalPlaces: 0, // optional, defaults to 2dp
-              color: (opacity = 1) => `rgba(88, 86, 214, ${opacity})`,
-              labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              style: {
-                borderRadius: 16,
-              },
-              propsForDots: {
-                r: "6",
-                strokeWidth: "2",
-                stroke: colors.primary,
-              },
-            }}
-            bezier
-            style={{
-              marginVertical: 20,
-              borderRadius: moderateScale(22),
-            }}
-          />
+          <LineChartCustom dates={onlyHeightDates} values={onlyHeight} />
         ) : (
           <Text style={[styles.ifNotText, { color: colors.text }]}>
             Boy Bilgileri Girilmemiştir.
@@ -154,40 +149,7 @@ const DetailScreen = () => {
         </Text>
 
         {onlyWeight && onlyWeight.length > 0 ? (
-          <LineChart
-            data={{
-              labels: onlyWeightDates,
-              datasets: [
-                {
-                  data: onlyWeight,
-                },
-              ],
-            }}
-            width={horizontalScale(350)}
-            height={verticalScale(250)}
-            yAxisInterval={1} // optional, defaults to 1
-            chartConfig={{
-              backgroundColor: "white",
-              backgroundGradientFrom: colors.notification,
-              backgroundGradientTo: colors.notification,
-              decimalPlaces: 0, // optional, defaults to 2dp
-              color: (opacity = 1) => `rgba(88, 86, 214, ${opacity})`,
-              labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              style: {
-                borderRadius: 16,
-              },
-              propsForDots: {
-                r: "6",
-                strokeWidth: "2",
-                stroke: colors.primary,
-              },
-            }}
-            bezier
-            style={{
-              marginVertical: 20,
-              borderRadius: moderateScale(22),
-            }}
-          />
+          <LineChartCustom dates={onlyWeightDates} values={onlyWeight} />
         ) : (
           <Text style={[styles.ifNotText, { color: colors.text }]}>
             Kilo Bilgileri Girilmemiştir.

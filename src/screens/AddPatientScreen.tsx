@@ -1,30 +1,39 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
-import CustomTextInput from "../components/CustomTextInput";
 import {
-  horizontalScale,
-  moderateScale,
-  verticalScale,
-} from "../theme/metrics";
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  View,
+} from "react-native";
+import React, { useState } from "react";
+
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { CheckBox } from "react-native-elements";
 import { useDispatch } from "react-redux";
 import { addPatient } from "../redux/reducers";
 import { generateUniqueId } from "../utils/generate-unique-id";
-import Seperator from "../components/Seperator";
-import CustomButton from "../components/CustomButton";
-import dieasesData from "../data/disease";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 
-import DateTimePicker from "@react-native-community/datetimepicker";
 import MeasurText from "../components/MeasurText";
 import SubHeader from "../components/SubHeader";
 import DatePickerButton from "../components/DatePickerButton";
 import SupportButton from "../components/SupportButton";
 import MultipleInput from "../components/MultipleInput";
+import Seperator from "../components/Seperator";
+import CustomButton from "../components/CustomButton";
+import dieasesData from "../data/disease";
+import CustomTextInput from "../components/CustomTextInput";
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from "../theme/metrics";
 
 const AddPatientScreen = () => {
+  //
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const { colors } = useTheme();
@@ -32,10 +41,12 @@ const AddPatientScreen = () => {
   //TextInput State
   const [patientName, setPatientName] = useState("");
   const [patientSurname, setPatientSurname] = useState("");
+  const [errorText, setErrorText] = useState("");
 
-  //DatePicker State
+  //Doğum Tarihi DatePicker State
   const [date, setDate] = useState(moment(new Date()).format("DD/MM/YYYY"));
   //DatePicker func
+  const tempDate = moment(new Date()).format("DD/MM/YYYY");
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = moment(selectedDate).format("DD/MM/YYYY");
     setDate(currentDate);
@@ -91,6 +102,7 @@ const AddPatientScreen = () => {
     null
   );
 
+  //Handele MultipleInputs functions
   const handleHeightTextChange = (index: number, newValue: string) => {
     setHeightValues((prevValues) => {
       const updatedValues = [...prevValues];
@@ -171,13 +183,22 @@ const AddPatientScreen = () => {
   };
 
   const showDatePickerForHeightIndex = (index: number) => {
-    setShowHeightDatePicker(true);
     setSelectedHeightIndex(index);
+    setShowHeightDatePicker(true);
   };
 
   const showDatePickerForWeightIndex = (index: number) => {
-    setShowWeightDatePicker(true);
     setSelectedWeightIndex(index);
+    setShowWeightDatePicker(true);
+  };
+
+  //Toast func
+  const showToast = () => {
+    ToastAndroid.showWithGravity(
+      "Hasta Eklendi",
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER
+    );
   };
 
   //Redux dispatch
@@ -185,15 +206,28 @@ const AddPatientScreen = () => {
     const uniqueId = generateUniqueId();
     const mergedHeightList = heightValues.map((value, index) => ({
       value,
-      date: moment(selectedHeightDates[index]).format("DD/MM/YYYY"),
+      date: moment(selectedHeightDates[index]).format("YYYY-MM-DD"),
     }));
     console.log("HH", mergedHeightList);
     const mergedWeightList = weightValues.map((value, index) => ({
       value,
-      date: moment(selectedWeightDates[index]).format("DD/MM/YYYY"),
+      date: moment(selectedWeightDates[index]).format("YYYY-MM-DD"),
     }));
     console.log("WW", mergedWeightList);
-    if (patientName) {
+    if (!patientName.trim() || !patientSurname.trim() || date === tempDate) {
+      Alert.alert(
+        "Hasta Ekleme Başarısız",
+        "Lütfen gerekli boşlukları doldurun.",
+        [
+          {
+            text: "Tamam",
+          },
+        ]
+      );
+      setErrorText("*Lütfen doldurun");
+      return;
+    }
+    if (patientName && patientSurname && date !== tempDate) {
       const patient = {
         id: uniqueId,
         name: patientName + " " + patientSurname,
@@ -202,10 +236,12 @@ const AddPatientScreen = () => {
         heightData: mergedHeightList,
         weightData: mergedWeightList,
       };
-      dispatch(addPatient(patient));
+      const success = dispatch(addPatient(patient));
+      if (success) {
+        showToast();
+        navigation.goBack();
+      }
     }
-
-    setPatientName("");
   };
 
   return (
@@ -216,16 +252,34 @@ const AddPatientScreen = () => {
           placeholder="Hasta ismi"
           onChangeText={(text) => setPatientName(text)}
         />
+        <Text style={[styles.errorTestStyle, { color: colors.card }]}>
+          {errorText}
+        </Text>
         <CustomTextInput
           placeholder="Hasta Soyismi"
           onChangeText={(text) => setPatientSurname(text)}
         />
+        <Text style={[styles.errorTestStyle, { color: colors.card }]}>
+          {errorText}
+        </Text>
         <View style={styles.birthDateContainer}>
           <Text style={[styles.dateText, { color: colors.text }]}>
             Doğum Tarihi
           </Text>
           <DatePickerButton date={date} onPress={showDatepicker} />
         </View>
+        <Text
+          style={[
+            styles.errorTestStyle,
+            {
+              color: colors.card,
+              marginLeft: "auto",
+              marginRight: verticalScale(86),
+            },
+          ]}
+        >
+          {errorText}
+        </Text>
         <Seperator />
         <SubHeader text="Şikayetler" />
         <View style={styles.marginVertival}>
@@ -272,12 +326,14 @@ const AddPatientScreen = () => {
             mode="date"
             is24Hour={true}
             display="default"
-            onChange={(event, newDate) =>
+            onChange={(event, newDate) => {
+              setShowHeightDatePicker(false);
+              setSelectedHeightIndex(null);
               handleHeightDateChange(
                 selectedHeightIndex!,
                 newDate || new Date()
-              )
-            }
+              );
+            }}
           />
         )}
         <Seperator />
@@ -305,12 +361,14 @@ const AddPatientScreen = () => {
             mode="date"
             is24Hour={true}
             display="default"
-            onChange={(event, newDate) =>
+            onChange={(event, newDate) => {
+              setShowWeightDatePicker(false);
+              setSelectedWeightIndex(null);
               handleWeightDateChange(
                 selectedWeightIndex!,
                 newDate || new Date()
-              )
-            }
+              );
+            }}
           />
         )}
         <CustomButton
@@ -318,7 +376,6 @@ const AddPatientScreen = () => {
           position="relative"
           onPress={() => {
             handleAddPatient();
-            navigation.goBack();
           }}
         />
       </View>
@@ -338,13 +395,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     width: "80%",
-    marginVertical: verticalScale(10),
+    marginTop: verticalScale(10),
   },
   dateText: {
     fontSize: moderateScale(16),
     fontWeight: "500",
   },
 
+  errorTestStyle: {
+    fontWeight: "300",
+    fontSize: moderateScale(12),
+    marginTop: verticalScale(2),
+    marginLeft: horizontalScale(10),
+  },
   marginVertival: {
     marginVertical: verticalScale(10),
   },

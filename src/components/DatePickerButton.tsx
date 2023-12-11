@@ -12,6 +12,7 @@ import {
   moderateScale,
   verticalScale,
 } from "../theme/metrics";
+import moment from "moment";
 
 type DatePickerButtonType = {
   date: string;
@@ -25,6 +26,7 @@ const DatePickerButton = ({
   ...props
 }: DatePickerButtonType) => {
   const { colors } = useTheme();
+  const tempDate = moment(new Date()).format("DD/MM/YYYY");
   return (
     <TouchableOpacity
       style={[
@@ -38,7 +40,9 @@ const DatePickerButton = ({
       {...props}
       onPress={onPress}
     >
-      <Text style={styles.dateDataText}>{date}</Text>
+      <Text style={styles.dateDataText}>
+        {date === tempDate ? "Seç" : date}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -53,7 +57,7 @@ const styles = StyleSheet.create({
     width: horizontalScale(110),
     borderRadius: moderateScale(16),
     borderWidth: 2,
-    marginVertical: verticalScale(16),
+    marginVertical: verticalScale(2),
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

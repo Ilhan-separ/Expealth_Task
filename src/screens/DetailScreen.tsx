@@ -62,7 +62,7 @@ const DetailScreen = () => {
     ) => a.date.getTime() - b.date.getTime()
   );
 
-  const onlyWeightDates = filteredHeightData.map(
+  const onlyWeightDates = filteredWeightData.map(
     (item: { date: moment.MomentInput }) => moment(item.date).format("MM/YYYY")
   );
   const onlyWeight = filteredWeightData.map((item: { value: string }) =>

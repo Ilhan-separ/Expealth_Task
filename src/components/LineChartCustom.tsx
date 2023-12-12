@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { LineChart } from "react-native-chart-kit";
 import {
@@ -11,7 +11,7 @@ import { Float } from "react-native/Libraries/Types/CodegenTypes";
 
 type LineChartType = {
   dates: string[];
-  values: Float[];
+  values: number[];
 };
 
 const LineChartCustom = ({ dates, values }: LineChartType) => {
@@ -26,11 +26,14 @@ const LineChartCustom = ({ dates, values }: LineChartType) => {
           },
         ],
       }}
+      onDataPointClick={({ value }) => Alert.alert(`${value}`)}
       width={horizontalScale(350)}
       height={verticalScale(250)}
+      verticalLabelRotation={30}
       yLabelsOffset={20}
       segments={6}
-      yAxisInterval={1} // optional, defaults to 1
+      yAxisInterval={1}
+      withVerticalLabels={false} // optional, defaults to 1
       chartConfig={{
         propsForLabels: {
           fontSize: moderateScale(10),

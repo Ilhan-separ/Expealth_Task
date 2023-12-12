@@ -6,6 +6,7 @@ import SupportButton from "./SupportButton";
 import { horizontalScale, verticalScale } from "../theme/metrics";
 import moment from "moment";
 import { useTheme } from "@react-navigation/native";
+import { ScrollView } from "react-native-gesture-handler";
 
 type MultipleInputType = {
   index: number;

@@ -30,6 +30,7 @@ import {
   horizontalScale,
   moderateScale,
   verticalScale,
+  width,
 } from "../theme/metrics";
 
 const AddPatientScreen = () => {
@@ -304,17 +305,24 @@ const AddPatientScreen = () => {
         <Seperator />
         <SubHeader text="Boy Ölçümleri" />
         <MeasurText text1="Sonuç (örn 182)" />
-        {heightValues.map((value, index) => (
-          <MultipleInput
-            index={index}
-            value={value}
-            handleTextChange={handleHeightTextChange}
-            contentValues={heightValues}
-            removeOption={removeHeightOption}
-            selectedHeightDates={selectedHeightDates}
-            showDatePickerForIndex={showDatePickerForHeightIndex}
-          />
-        ))}
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          showsVerticalScrollIndicator={true}
+          nestedScrollEnabled
+          style={{ maxHeight: verticalScale(170) }}
+        >
+          {heightValues.map((value, index) => (
+            <MultipleInput
+              index={index}
+              value={value}
+              handleTextChange={handleHeightTextChange}
+              contentValues={heightValues}
+              removeOption={removeHeightOption}
+              selectedHeightDates={selectedHeightDates}
+              showDatePickerForIndex={showDatePickerForHeightIndex}
+            />
+          ))}
+        </ScrollView>
         <SupportButton
           text="Girdi Ekle"
           onPress={addHeightOption}
@@ -336,20 +344,28 @@ const AddPatientScreen = () => {
             }}
           />
         )}
+
         <Seperator />
         <SubHeader text="Kilo Ölçümleri" />
         <MeasurText text1="Sonuç (örn 76)" />
-        {weightValues.map((value, index) => (
-          <MultipleInput
-            value={value}
-            index={index}
-            handleTextChange={handleWeightTextChange}
-            contentValues={weightValues}
-            removeOption={removeWeightOption}
-            selectedHeightDates={selectedWeightDates}
-            showDatePickerForIndex={showDatePickerForWeightIndex}
-          />
-        ))}
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          showsVerticalScrollIndicator={true}
+          nestedScrollEnabled
+          style={{ maxHeight: verticalScale(170) }}
+        >
+          {weightValues.map((value, index) => (
+            <MultipleInput
+              value={value}
+              index={index}
+              handleTextChange={handleWeightTextChange}
+              contentValues={weightValues}
+              removeOption={removeWeightOption}
+              selectedHeightDates={selectedWeightDates}
+              showDatePickerForIndex={showDatePickerForWeightIndex}
+            />
+          ))}
+        </ScrollView>
         <SupportButton
           text="Girdi Ekle"
           onPress={addWeightOption}

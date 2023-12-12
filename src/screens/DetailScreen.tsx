@@ -132,7 +132,9 @@ const DetailScreen = () => {
           Boy Grafiği
         </Text>
         {onlyHeight && onlyHeight.length > 0 ? (
-          <LineChartCustom dates={onlyHeightDates} values={onlyHeight} />
+          <ScrollView horizontal={true}>
+            <LineChartCustom dates={onlyHeightDates} values={onlyHeight} />
+          </ScrollView>
         ) : (
           <Text style={[styles.ifNotText, { color: colors.text }]}>
             Boy Bilgileri Girilmemiştir.
@@ -149,7 +151,9 @@ const DetailScreen = () => {
         </Text>
 
         {onlyWeight && onlyWeight.length > 0 ? (
-          <LineChartCustom dates={onlyWeightDates} values={onlyWeight} />
+          <ScrollView horizontal={true}>
+            <LineChartCustom dates={onlyWeightDates} values={onlyWeight} />
+          </ScrollView>
         ) : (
           <Text style={[styles.ifNotText, { color: colors.text }]}>
             Kilo Bilgileri Girilmemiştir.

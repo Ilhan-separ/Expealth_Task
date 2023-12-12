@@ -33,10 +33,16 @@ const patientSlice = createSlice({
         weightData,
       });
     },
+    deletePatient: (state, action: PayloadAction<string>) => {
+      const patientId = action.payload;
+      state.patients = state.patients.filter(
+        (patient) => patient.id !== patientId
+      );
+    },
   },
 });
 
-export const { addPatient } = patientSlice.actions;
+export const { addPatient, deletePatient } = patientSlice.actions;
 
 export type PatientAction = ReturnType<typeof addPatient>;
 

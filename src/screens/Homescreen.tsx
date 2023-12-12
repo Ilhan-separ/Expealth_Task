@@ -14,21 +14,20 @@ import {
   verticalScale,
 } from "../theme/metrics";
 import CustomButton from "../components/CustomButton";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
-
-// EXTRACT TO ANOTHER CLASS
-const patientsData = [
-  { id: "1", name: "Ahmet Yılmaz", details: "Ahmet's details" },
-  { id: "2", name: "Ayşe Demir", details: "Ayşe's details" },
-];
+import { deletePatient } from "../redux/reducers";
 
 const Homescreen = () => {
   const navigation = useNavigation();
   const { colors } = useTheme();
-
+  const dispatch = useDispatch();
   const patients = useSelector((state: RootState) => state.patients);
   console.log("Current Redux State: ", patients);
+
+  const handleDeletePatient = (patientId: string) => {
+    dispatch(deletePatient(patientId));
+  };
 
   return (
     <View style={styles.container}>
@@ -54,6 +53,13 @@ const Homescreen = () => {
                   flexDirection: "column",
                 }}
               >
+                <AntDesign
+                  name="delete"
+                  size={moderateScale(14)}
+                  color={colors.text}
+                  style={{ marginBottom: verticalScale(8) }}
+                  onPress={() => handleDeletePatient(item.id)}
+                />
                 <Text style={[styles.patientName, { color: colors.text }]}>
                   {item.name}
                 </Text>
@@ -102,6 +108,8 @@ const styles = StyleSheet.create({
   patientItem: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignContent: "center",
+    alignItems: "center",
     borderRadius: moderateScale(24),
     borderWidth: 1,
     paddingVertical: verticalScale(28),

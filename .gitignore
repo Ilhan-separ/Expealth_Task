@@ -25,7 +25,7 @@ yarn-debug.*
 yarn-error.*
 yarn.lock
 
-package-lock.json
+package-lock
 
 # macOS
 .DS_Store
